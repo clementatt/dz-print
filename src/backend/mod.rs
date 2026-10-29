@@ -15,6 +15,8 @@ use tracing::{debug, error, info, trace, warn};
 
 use crate::command::{self, packager};
 
+pub mod ble;
+
 pub enum USBSelector {
     /// by VID and PID, pick the first match
     USBID(u16, u16),

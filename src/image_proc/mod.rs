@@ -155,3 +155,27 @@ impl Bitmap {
         (start, end)
     }
 }
+
+impl Bitmap {
+    /// 在每行左侧补 `dots` 个空白点, 用于把内容按打印头宽度做水平居中 / 偏移
+    ///
+    /// 注意: 打印命令 `0x1f 0x2b` 的前导空白以**字节**为单位, 所以实际偏移会被
+    /// 向下取整到 8 的倍数, 调用方应先自行对齐 (`offset / 8 * 8`)。
+    pub fn pad_left(&self, dots: u32) -> Bitmap {
+        if dots == 0 || self.w == 0 {
+            return self.clone();
+        }
+        let w = self.w + dots;
+        let mut pix = Vec::with_capacity(w as usize * self.h as usize);
+        for y in 0..self.h as usize {
+            let start = y * self.w as usize;
+            pix.extend(std::iter::repeat_n(false, dots as usize));
+            pix.extend_from_slice(&self.pix[start..start + self.w as usize]);
+        }
+        Bitmap {
+            w,
+            h: self.h,
+            pix,
+        }
+    }
+}

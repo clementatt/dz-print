@@ -9,6 +9,8 @@ license = "MPL-2.0"
 
 [dependencies]
 btleplug = "0.12.0"
+uuid = { version = "1", features = ["v4"] }
+futures = "0.3"
 bytebuffer = "2.3.0"
 image = "0.25.10"
 rusb = "0.9.4"
